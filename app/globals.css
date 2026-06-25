@@ -1,0 +1,117 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #000000;
+  --muted: #6b7280;
+  --border: #e5e7eb;
+}
+
+.dark {
+  --background: #000000;
+  --foreground: #ffffff;
+  --muted: #9ca3af;
+  --border: #1f2937;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background-color: #0066ff;
+    color: #ffffff;
+  }
+}
+
+@layer components {
+  .container-custom {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .section-padding {
+    @apply py-16 md:py-24;
+  }
+
+  .heading-1 {
+    @apply text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl;
+  }
+
+  .heading-2 {
+    @apply text-3xl font-bold tracking-tight sm:text-4xl;
+  }
+
+  .heading-3 {
+    @apply text-xl font-semibold sm:text-2xl;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-lg bg-brand-blue px-6 py-3 text-sm font-semibold text-white transition-all hover:bg-brand-blue-dark focus:outline-none focus:ring-2 focus:ring-brand-blue focus:ring-offset-2 disabled:opacity-50;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center rounded-lg border-2 border-foreground bg-transparent px-6 py-3 text-sm font-semibold transition-all hover:bg-foreground hover:text-background focus:outline-none focus:ring-2 focus:ring-foreground focus:ring-offset-2;
+  }
+
+  .card {
+    @apply rounded-2xl border border-border bg-background p-6 shadow-sm transition-shadow hover:shadow-md;
+  }
+
+  .input-field {
+    @apply w-full rounded-lg border border-border bg-background px-4 py-3 text-sm transition-colors focus:border-brand-blue focus:outline-none focus:ring-2 focus:ring-brand-blue/20;
+  }
+
+  .label {
+    @apply mb-2 block text-sm font-medium;
+  }
+
+  .skeleton {
+    @apply animate-pulse rounded bg-border;
+  }
+
+  .prose-content h1 {
+    @apply mb-4 text-3xl font-bold;
+  }
+
+  .prose-content h2 {
+    @apply mb-3 text-2xl font-bold;
+  }
+
+  .prose-content h3 {
+    @apply mb-2 text-xl font-semibold;
+  }
+
+  .prose-content p {
+    @apply mb-4 leading-relaxed;
+  }
+
+  .prose-content ul {
+    @apply mb-4 list-disc pl-6;
+  }
+
+  .prose-content ol {
+    @apply mb-4 list-decimal pl-6;
+  }
+
+  .prose-content a {
+    @apply text-brand-blue hover:underline;
+  }
+
+  .prose-content blockquote {
+    @apply border-l-4 border-brand-blue pl-4 italic;
+  }
+
+  .prose-content img {
+    @apply max-w-full rounded-lg;
+  }
+}
