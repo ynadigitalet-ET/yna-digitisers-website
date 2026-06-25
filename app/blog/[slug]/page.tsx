@@ -1,7 +1,8 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Calendar } from "lucide-react";
-import { getBlogPostBySlug, getBlogPosts } from "@/lib/data";
+import { getBlogPostBySlug } from "@/lib/data";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { formatDate } from "@/lib/utils";
 import { generateSEO } from "@/lib/seo";
 import type { Metadata } from "next";
@@ -11,8 +12,16 @@ interface Props {
 }
 
 export async function generateStaticParams() {
-  const posts = await getBlogPosts();
-  return posts.map((post) => ({ slug: post.slug }));
+  try {
+    const supabase = createAdminClient();
+    const { data } = await supabase
+      .from("blog_posts")
+      .select("slug")
+      .eq("published", true);
+    return (data || []).map((post) => ({ slug: post.slug }));
+  } catch {
+    return [];
+  }
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

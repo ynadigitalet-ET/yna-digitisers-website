@@ -1,10 +1,21 @@
 import { MetadataRoute } from "next";
 import { getSiteUrl } from "@/lib/utils";
-import { getBlogPosts } from "@/lib/data";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = getSiteUrl();
-  const posts = await getBlogPosts();
+
+  let posts: { slug: string; updated_at: string }[] = [];
+  try {
+    const supabase = createAdminClient();
+    const { data } = await supabase
+      .from("blog_posts")
+      .select("slug, updated_at")
+      .eq("published", true);
+    posts = data || [];
+  } catch {
+    posts = [];
+  }
 
   const staticPages = [
     "",
