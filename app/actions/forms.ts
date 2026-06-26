@@ -6,9 +6,10 @@ import {
   projectRequestEmailHtml,
   contactMessageEmailHtml,
   newsletterWelcomeEmailHtml,
+  telebirrOrderEmailHtml,
 } from "@/lib/resend";
 import { isValidEmail } from "@/lib/utils";
-import type { ActionResult, ContactMessageInput, ProjectRequestInput } from "@/types";
+import type { ActionResult, ContactMessageInput, ProjectRequestInput, TelebirrOrderInput } from "@/types";
 
 export async function submitProjectRequest(
   input: ProjectRequestInput
@@ -137,4 +138,49 @@ export async function subscribeNewsletter(email: string): Promise<ActionResult> 
   });
 
   return { success: true, message: "Successfully subscribed to our newsletter!" };
+}
+
+export async function submitTelebirrOrder(input: TelebirrOrderInput): Promise<ActionResult> {
+  const {
+    customer_name,
+    customer_email,
+    customer_phone,
+    package_name,
+    amount,
+    telebirr_number_used,
+    transaction_reference,
+  } = input;
+
+  if (!customer_name?.trim()) return { success: false, message: "Full name is required." };
+  if (!customer_email?.trim() || !isValidEmail(customer_email)) {
+    return { success: false, message: "Valid email is required." };
+  }
+  if (!customer_phone?.trim()) return { success: false, message: "Phone number is required." };
+  if (!package_name?.trim()) return { success: false, message: "Please select a package." };
+  if (!telebirr_number_used?.trim()) return { success: false, message: "Please select the Telebirr number used." };
+  if (!transaction_reference?.trim()) return { success: false, message: "Transaction reference is required." };
+
+  const supabase = createAdminClient();
+  const { error } = await supabase.from("telebirr_orders").insert({
+    customer_name: customer_name.trim(),
+    customer_email: customer_email.trim(),
+    customer_phone: customer_phone.trim(),
+    package_name: package_name.trim(),
+    amount: amount.trim(),
+    telebirr_number_used: telebirr_number_used.trim(),
+    transaction_reference: transaction_reference.trim(),
+    status: "pending",
+  });
+
+  if (error) {
+    console.error("Telebirr order error:", error);
+    return { success: false, message: "Failed to submit order. Please try again." };
+  }
+
+  await sendEmail({
+    subject: `New Telebirr Payment — ${package_name} (${transaction_reference.trim()})`,
+    html: telebirrOrderEmailHtml(input),
+  });
+
+  return { success: true, message: "Order submitted successfully." };
 }

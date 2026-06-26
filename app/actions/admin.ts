@@ -4,7 +4,8 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { requireAdmin } from "@/lib/data";
 import { revalidatePath } from "next/cache";
 import { slugify } from "@/lib/utils";
-import type { ProjectStatus } from "@/types";
+import { buildSocialLinksPayload } from "@/lib/social";
+import type { ProjectStatus, TelebirrOrderStatus } from "@/types";
 
 async function adminAction() {
   await requireAdmin();
@@ -133,13 +134,16 @@ export async function saveSocialLinks(data: Record<string, string>) {
   const supabase = await adminAction();
   const { data: existing } = await supabase.from("social_links").select("id").limit(1).single();
 
-  const payload = { ...data, updated_at: new Date().toISOString() };
+  const payload = buildSocialLinksPayload(data);
   const { error } = existing
     ? await supabase.from("social_links").update(payload).eq("id", existing.id)
     : await supabase.from("social_links").insert(payload);
 
   if (error) return { success: false, message: error.message };
   revalidatePath("/admin");
+  revalidatePath("/admin/social");
+  revalidatePath("/", "layout");
+  revalidatePath("/contact");
   return { success: true };
 }
 
@@ -267,4 +271,20 @@ export async function exportSubscribersCSV() {
   const header = "Email,Subscribed At\n";
   const rows = data.map((s) => `${s.email},${s.created_at}`).join("\n");
   return header + rows;
+}
+
+export async function updateTelebirrOrderStatus(id: string, status: TelebirrOrderStatus) {
+  const supabase = await adminAction();
+  const { error } = await supabase.from("telebirr_orders").update({ status }).eq("id", id);
+  if (error) return { success: false, message: error.message };
+  revalidatePath("/admin/telebirr-orders");
+  return { success: true };
+}
+
+export async function deleteTelebirrOrder(id: string) {
+  const supabase = await adminAction();
+  const { error } = await supabase.from("telebirr_orders").delete().eq("id", id);
+  if (error) return { success: false, message: error.message };
+  revalidatePath("/admin/telebirr-orders");
+  return { success: true };
 }

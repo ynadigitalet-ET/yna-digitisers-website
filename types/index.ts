@@ -66,6 +66,7 @@ export interface SocialLinks {
   linkedin?: string | null;
   tiktok?: string | null;
   youtube?: string | null;
+  telegram?: string | null;
   whatsapp?: string | null;
   updated_at: string;
 }
@@ -153,4 +154,30 @@ export interface ContactMessageInput {
 export interface ActionResult {
   success: boolean;
   message: string;
+}
+
+export type TelebirrOrderStatus = "pending" | "verified" | "completed" | "rejected";
+
+export interface TelebirrOrder {
+  id: string;
+  customer_name: string;
+  customer_email: string;
+  customer_phone: string;
+  package_name: string;
+  amount: string;
+  telebirr_number_used: string;
+  transaction_reference: string;
+  status: TelebirrOrderStatus;
+  notes?: string | null;
+  created_at: string;
+}
+
+export interface TelebirrOrderInput {
+  customer_name: string;
+  customer_email: string;
+  customer_phone: string;
+  package_name: string;
+  amount: string;
+  telebirr_number_used: string;
+  transaction_reference: string;
 }

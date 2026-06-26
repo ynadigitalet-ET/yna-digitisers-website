@@ -1,5 +1,6 @@
 import { Resend } from "resend";
 import { OWNER_EMAIL, SITE_NAME } from "./constants";
+import type { TelebirrOrderInput } from "@/types";
 
 let resend: Resend | null = null;
 
@@ -95,5 +96,18 @@ export function newsletterWelcomeEmailHtml(email: string) {
     <h2>Welcome to ${SITE_NAME}!</h2>
     <p>Thank you for subscribing to our newsletter, ${email}.</p>
     <p>You'll receive updates on web design tips, special offers, and company news.</p>
+  `;
+}
+
+export function telebirrOrderEmailHtml(data: TelebirrOrderInput) {
+  return `
+    <h2>New Telebirr Payment Confirmation</h2>
+    <p><strong>Customer:</strong> ${data.customer_name}</p>
+    <p><strong>Email:</strong> ${data.customer_email}</p>
+    <p><strong>Phone:</strong> ${data.customer_phone}</p>
+    <p><strong>Package:</strong> ${data.package_name}</p>
+    <p><strong>Amount:</strong> ${data.amount}</p>
+    <p><strong>Telebirr Number Used:</strong> ${data.telebirr_number_used}</p>
+    <p><strong>Transaction Reference:</strong> ${data.transaction_reference}</p>
   `;
 }

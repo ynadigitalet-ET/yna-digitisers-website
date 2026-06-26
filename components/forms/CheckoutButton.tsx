@@ -68,12 +68,14 @@ export function ProcessSteps() {
 export function PricingCard({
   name,
   price,
+  etbPrice,
   features,
   packageSlug,
   highlighted = false,
 }: {
   name: string;
   price: number;
+  etbPrice?: string;
   features: string[];
   packageSlug: string;
   highlighted?: boolean;
@@ -88,6 +90,9 @@ export function PricingCard({
       <h3 className="heading-3 mb-2">{name}</h3>
       <div className="mb-6">
         <span className="text-4xl font-bold">${price}</span>
+        {etbPrice && (
+          <p className="mt-2 text-sm font-medium text-[#7B2D8E]">{etbPrice} via Telebirr</p>
+        )}
       </div>
       <ul className="mb-8 flex-1 space-y-3">
         {features.map((feature) => (

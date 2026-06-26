@@ -78,6 +78,7 @@ export const DEFAULT_PRICING = [
     name: "Starter",
     slug: "starter",
     price: 299,
+    etbPrice: "15,000 ETB",
     features: [
       "1-5 pages",
       "Mobile responsive",
@@ -91,6 +92,7 @@ export const DEFAULT_PRICING = [
     name: "Professional",
     slug: "professional",
     price: 799,
+    etbPrice: "40,000 ETB",
     features: [
       "Up to 10 pages",
       "Full SEO",
@@ -104,6 +106,7 @@ export const DEFAULT_PRICING = [
     name: "Enterprise",
     slug: "enterprise",
     price: 1499,
+    etbPrice: "75,000 ETB",
     features: [
       "Unlimited pages",
       "Advanced SEO",
@@ -115,6 +118,23 @@ export const DEFAULT_PRICING = [
     ],
   },
 ];
+
+export const TELEBIRR_NUMBERS = [
+  { display: "+251 994 669 500", tel: "+251994669500", value: "+251 994 669 500" },
+  { display: "+251 908 029 753", tel: "+251908029753", value: "+251 908 029 753" },
+] as const;
+
+export const TELEBIRR_PACKAGE_OPTIONS = [
+  { label: "Starter - 15,000 ETB", name: "Starter", amount: "15,000 ETB" },
+  { label: "Professional - 40,000 ETB", name: "Professional", amount: "40,000 ETB" },
+  { label: "Enterprise - 75,000 ETB", name: "Enterprise", amount: "75,000 ETB" },
+] as const;
+
+export const ETB_PRICE_BY_SLUG: Record<string, string> = {
+  starter: "15,000 ETB",
+  professional: "40,000 ETB",
+  enterprise: "75,000 ETB",
+};
 
 export const WHY_CHOOSE_US = [
   {
