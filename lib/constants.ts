@@ -119,10 +119,15 @@ export const DEFAULT_PRICING = [
   },
 ];
 
-export const TELEBIRR_NUMBERS = [
-  { display: "+251 994 669 500", tel: "+251994669500", value: "+251 994 669 500" },
-  { display: "+251 908 029 753", tel: "+251908029753", value: "+251 908 029 753" },
-] as const;
+export const TELEBIRR_ACCOUNT = {
+  display: "+251 908 029 753",
+  tel: "+251908029753",
+  value: "+251 908 029 753",
+  accountHolder: "Yohannes Nigatu",
+} as const;
+
+/** @deprecated Use TELEBIRR_ACCOUNT — kept as array for form dropdown compatibility */
+export const TELEBIRR_NUMBERS = [TELEBIRR_ACCOUNT] as const;
 
 export const TELEBIRR_PACKAGE_OPTIONS = [
   { label: "Starter - 15,000 ETB", name: "Starter", amount: "15,000 ETB" },

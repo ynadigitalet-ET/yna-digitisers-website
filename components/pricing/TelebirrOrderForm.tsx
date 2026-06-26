@@ -3,7 +3,7 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { submitTelebirrOrder } from "@/app/actions/forms";
-import { TELEBIRR_NUMBERS, TELEBIRR_PACKAGE_OPTIONS } from "@/lib/constants";
+import { TELEBIRR_ACCOUNT, TELEBIRR_PACKAGE_OPTIONS } from "@/lib/constants";
 import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
 import { Button } from "@/components/ui/Button";
@@ -12,7 +12,6 @@ export function TelebirrOrderForm() {
   const [loading, setLoading] = useState(false);
 
   const packageOptions = TELEBIRR_PACKAGE_OPTIONS.map((p) => p.label);
-  const telebirrNumberOptions = TELEBIRR_NUMBERS.map((n) => n.value);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -28,7 +27,7 @@ export function TelebirrOrderForm() {
       customer_phone: formData.get("customer_phone") as string,
       package_name: selectedPackage?.name || packageLabel,
       amount: selectedPackage?.amount || "",
-      telebirr_number_used: formData.get("telebirr_number_used") as string,
+      telebirr_number_used: TELEBIRR_ACCOUNT.value,
       transaction_reference: formData.get("transaction_reference") as string,
     });
 
@@ -79,13 +78,12 @@ export function TelebirrOrderForm() {
           options={packageOptions}
         />
 
-        <Select
-          name="telebirr_number_used"
-          label="Telebirr Number You Sent To"
-          required
-          placeholder="Select the number you paid"
-          options={telebirrNumberOptions}
-        />
+        <div className="rounded-lg border border-border bg-background px-4 py-3">
+          <p className="label mb-1">Telebirr Number You Sent To</p>
+          <p className="font-medium">
+            {TELEBIRR_ACCOUNT.display} — {TELEBIRR_ACCOUNT.accountHolder}
+          </p>
+        </div>
 
         <Input
           name="transaction_reference"
